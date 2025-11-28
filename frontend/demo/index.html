@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春伴行平台 - 静态演示</title>
+    <link rel="stylesheet" href="telegram-theme.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0e1621;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #17212b;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            color: #5288c1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #8b98a5;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(82, 136, 193, 0.15);
+            color: #5288c1;
+        }
+
+        .nav-btn.active {
+            background: #5288c1;
+            color: white;
+        }
+
+        .content {
+            background: #17212b;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-height: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background: #0e1621;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s;
+        }
+        
+        .card:hover {
+            border-color: rgba(82, 136, 193, 0.3);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #5288c1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4a7aad;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(82, 136, 193, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #8b98a5;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #c5d1de;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            background: #0e1621;
+            color: #c5d1de;
+            transition: all 0.2s;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #5288c1;
+            background: #17212b;
+        }
+        
+        .input::placeholder {
+            color: #6d7883;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            color: #c5d1de;
+            font-weight: 500;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .match-card {
+            background: #0e1621;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .match-card:hover {
+            border-color: #5288c1;
+            box-shadow: 0 4px 16px rgba(82, 136, 193, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #5288c1 0%, #4a7aad 100%);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(82, 136, 193, 0.3);
+        }
+
+        .chat-container {
+            display: flex;
+            height: 500px;
+            gap: 16px;
+        }
+
+        .chat-list {
+            width: 320px;
+            background: #0e1621;
+            border-radius: 12px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-item:hover {
+            background: rgba(82, 136, 193, 0.1);
+        }
+
+        .chat-item.active {
+            background: rgba(82, 136, 193, 0.15);
+            border-left: 3px solid #5288c1;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0e1621;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            animation: messageSlide 0.2s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 65%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .message.sent .message-bubble {
+            background: #5288c1;
+            color: white;
+            border-radius: 12px 12px 2px 12px;
+        }
+
+        .message.received .message-bubble {
+            background: #232e3c;
+            color: #c5d1de;
+            border-radius: 12px 12px 12px 2px;
+        }
+
+        .message.ai .message-bubble {
+            background: linear-gradient(135deg, #7c5cdb 0%, #6b4fc7 100%);
+            color: white;
+            border: 1px solid rgba(124, 92, 219, 0.3);
+            box-shadow: 0 2px 12px rgba(124, 92, 219, 0.3);
+            border-radius: 12px;
+        }
+
+        .message.ai {
+            justify-content: center;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+
+        .chat-input {
+            padding: 16px;
+            background: #17212b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5288c1 0%, #4a7aad 100%);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(82, 136, 193, 0.15);
+            color: #5288c1;
+            border-radius: 10px;
+            font-size: 12px;
+            margin: 4px;
+            border: 1px solid rgba(82, 136, 193, 0.2);
+            transition: all 0.2s;
+        }
+        
+        .tag:hover {
+            background: rgba(82, 136, 193, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .ai-suggestion {
+            background: rgba(124, 92, 219, 0.1);
+            border: 1px solid rgba(124, 92, 219, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            color: #c5d1de;
+        }
+
+        .report-section {
+            margin-bottom: 30px;
+        }
+
+        .report-section h3 {
+            color: #c5d1de;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #5288c1 0%, #4a7aad 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(82, 136, 193, 0.2);
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(82, 136, 193, 0.3);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        .personality-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .personality-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .personality-label {
+            width: 100px;
+            font-weight: 500;
+            color: #8b98a5;
+            font-size: 14px;
+        }
+
+        .personality-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .personality-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5288c1 0%, #4a7aad 100%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        .personality-value {
+            width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: #5288c1;
+            font-size: 14px;
+        }
+
+        .scene-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scene-btn {
+            padding: 18px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #0e1621;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            color: #8b98a5;
+        }
+
+        .scene-btn:hover {
+            border-color: #5288c1;
+            background: rgba(82, 136, 193, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .scene-btn.active {
+            border-color: #5288c1;
+            background: rgba(82, 136, 193, 0.15);
+            color: #c5d1de;
+        }
+
+        .scene-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+            filter: grayscale(0.3);
+        }
+        
+        .scene-btn.active .scene-icon {
+            filter: grayscale(0);
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            border: 1px solid;
+        }
+
+        .alert-info {
+            background: rgba(82, 136, 193, 0.1);
+            color: #5288c1;
+            border-color: rgba(82, 136, 193, 0.2);
+        }
+
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border-color: rgba(255, 193, 7, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+            border-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #17212b;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8b98a5;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: #c5d1de;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* 文字颜色 */
+        h2, h3, h4, h5, h6 {
+            color: #c5d1de;
+        }
+        
+        p, div {
+            color: #8b98a5;
+        }
+        
+        strong {
+            color: #c5d1de;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .chat-list {
+                width: 100%;
+                max-height: 200px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="14" r="6" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="17" cy="14" r="6" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>青春伴行</span>
+            </div>
+            <div class="nav">
+                <button class="nav-btn active" onclick="showPage('matching')">匹配</button>
+                <button class="nav-btn" onclick="showPage('chat')">对话</button>
+                <button class="nav-btn" onclick="showPage('profile')">画像</button>
+                <button class="nav-btn" onclick="showPage('report')">报告</button>
+                <button class="nav-btn" onclick="showPage('settings')">设置</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 匹配页面 -->
+            <div id="matching" class="page active">
+                <h2 style="margin-bottom: 20px; color: #c5d1de; font-weight: 600; display: flex; align-items: center; gap: 12px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" />
+                    </svg>
+                    智能伙伴推荐
+                    <span style="font-size: 14px; color: #5288c1; font-weight: normal;">
+                        多维度为你寻找最合拍的伙伴
+                    </span>
+                </h2>
+
+                <!-- 分析面板 -->
+                <div class="card" style="background: linear-gradient(135deg, #5288c1 0%, #4a7aad 100%); color: white; margin-bottom: 20px; border: 1px solid rgba(82, 136, 193, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="font-size: 48px; line-height: 1;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3v18h18"></path>
+                                <path d="M7 14l5-5 4 4 5-5"></path>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 8px; color: white; font-weight: 600;">智能分析中...</h3>
+                            <div id="aiAnalysisText" style="font-size: 14px; opacity: 0.95; color: white;">
+                                正在分析你的人格特质、兴趣爱好、社交偏好，为你匹配最适合的伙伴。
+                            </div>
+                            <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span style="background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px;">
+                                    ✓ 人格特质深度解析
+                                </span>
+                                <span style="background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px;">
+                                    ✓ 兴趣领域关联计算
+                                </span>
+                                <span style="background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px;">
+                                    ✓ 社交场景适配评估
+                                </span>
+                                <span style="background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px;">
+                                    ✓ 沟通风格同步预测
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scene-selector">
+                    <div class="scene-btn active" onclick="selectScene('study')">
+                        <div class="scene-icon">📚</div>
+                        <div>考研自习室</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">契合度: 95%</div>
+                    </div>
+                    <div class="scene-btn" onclick="selectScene('career')">
+                        <div class="scene-icon">💼</div>
+                        <div>职业咨询室</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">契合度: 82%</div>
+                    </div>
+                    <div class="scene-btn" onclick="selectScene('mental')">
+                        <div class="scene-icon">💭</div>
+                        <div>心理树洞</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">契合度: 88%</div>
+                    </div>
+                    <div class="scene-btn" onclick="selectScene('hobby')">
+                        <div class="scene-icon">🎨</div>
+                        <div>兴趣社群</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">契合度: 76%</div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    💡 当前场景：<strong id="currentScene" style="color: #5288c1;">考研自习室</strong> - 为你推荐志同道合的学习伙伴
+                    <div style="margin-top: 8px; font-size: 12px; color: #8b98a5;">
+                        智能助手会像朋友一样加入聊天，活跃气氛、寻找话题～
+                    </div>
+                </div>
+
+                <!-- AI匹配统计 -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                    <div style="background: rgba(82, 136, 193, 0.1); padding: 14px; border-radius: 12px; text-align: center; border: 1px solid rgba(82, 136, 193, 0.2);">
+                        <div style="font-size: 28px; font-weight: 700; color: #5288c1;" id="matchCount">0</div>
+                        <div style="font-size: 12px; color: #8b98a5;">为你找到的伙伴</div>
+                    </div>
+                    <div style="background: rgba(82, 136, 193, 0.1); padding: 14px; border-radius: 12px; text-align: center; border: 1px solid rgba(82, 136, 193, 0.2);">
+                        <div style="font-size: 28px; font-weight: 700; color: #5288c1;">98%</div>
+                        <div style="font-size: 12px; color: #8b98a5;">算法准确率</div>
+                    </div>
+                    <div style="background: rgba(82, 136, 193, 0.1); padding: 14px; border-radius: 12px; text-align: center; border: 1px solid rgba(82, 136, 193, 0.2);">
+                        <div style="font-size: 28px; font-weight: 700; color: #5288c1;">0.3s</div>
+                        <div style="font-size: 12px; color: #8b98a5;">分析速度</div>
+                    </div>
+                    <div style="background: rgba(82, 136, 193, 0.1); padding: 14px; border-radius: 12px; text-align: center; border: 1px solid rgba(82, 136, 193, 0.2);">
+                        <div style="font-size: 28px; font-weight: 700; color: #5288c1;">4维</div>
+                        <div style="font-size: 12px; color: #8b98a5;">匹配维度</div>
+                    </div>
+                </div>
+
+                <div id="matchResults" class="grid"></div>
+            </div>
+
+            <!-- 对话页面 -->
+            <div id="chat" class="page">
+                <h2 style="margin-bottom: 20px; color: #c5d1de; font-weight: 600;">💬 对话交流</h2>
+                
+                <div class="chat-container">
+                    <div class="chat-list" id="chatList"></div>
+                    <div class="chat-area">
+                        <div class="chat-messages" id="chatMessages">
+                            <div style="text-align: center; color: #6d7883; padding: 40px;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">💬</div>
+                                <div style="font-size: 16px;">选择一个对话开始聊天</div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="messageInput" class="input" placeholder="输入消息..." style="margin-bottom: 0;">
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <span style="font-size: 16px;">➤</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile" class="page">
+                <h2 style="margin-bottom: 20px; color: #c5d1de; font-weight: 600; display: flex; align-items: center; gap: 12px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <polyline points="17 11 19 13 23 9"></polyline>
+                    </svg>
+                    个人洞察报告
+                    <span style="font-size: 14px; color: #5288c1; font-weight: normal;">
+                        基于 <span id="messageAnalyzed">156</span> 条对话记录分析
+                    </span>
+                </h2>
+
+                <!-- 分析提示 -->
+                <div class="alert alert-info" style="margin-bottom: 20px;">
+                    💡 这份报告根据你的公开聊天记录自动生成，客观反映你的特征与行为模式，帮助你更好地认识自己。
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #c5d1de; font-weight: 600;">基本信息</h3>
+                    <p style="margin-bottom: 8px;"><strong>姓名：</strong><span style="color: #c5d1de;">张三</span></p>
+                    <p style="margin-bottom: 8px;"><strong>学校：</strong><span style="color: #c5d1de;">清华大学</span></p>
+                    <p style="margin-bottom: 8px;"><strong>专业：</strong><span style="color: #c5d1de;">计算机科学</span></p>
+                    <p style="margin-bottom: 8px;"><strong>年级：</strong><span style="color: #c5d1de;">大三</span></p>
+                    <p style="margin-bottom: 8px;"><strong>MBTI类型：</strong><span class="tag">INFP</span></p>
+                    <p style="margin-top: 12px; font-size: 12px; color: #6d7883;">
+                        最后更新：2024-01-15 14:30 | 下次更新：每周一自动更新
+                    </p>
+                </div>
+
+                <!-- 综合评价 -->
+                <div class="card" style="background: linear-gradient(135deg, rgba(82, 136, 193, 0.15) 0%, rgba(74, 122, 173, 0.1) 100%); border: 1px solid rgba(82, 136, 193, 0.3);">
+                    <div style="display: flex; align-items: start; gap: 16px;">
+                        <div style="font-size: 48px; line-height: 1;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 12px; color: #c5d1de; font-weight: 600;">综合洞察</h3>
+                            <div style="line-height: 1.8; color: #8b98a5;">
+                                <p style="margin-bottom: 12px;">
+                                    <strong>性格特征：</strong>你是一个内向但富有创造力的人（INFP），在对话中表现出较强的同理心和倾听能力。你善于深度思考，但有时会因为过度思考而产生焦虑。在社交中，你更倾向于一对一的深度交流，而非大型社交场合。
+                                </p>
+                                <p style="margin-bottom: 12px;">
+                                    <strong>沟通风格：</strong>你的表达方式细腻且富有情感，平均消息长度较长（约65字），说明你倾向于详细阐述自己的想法。你经常使用疑问句，显示出对他人观点的好奇和尊重。但有时你会在表达前犹豫较久，这可能影响对话的流畅性。
+                                </p>
+                                <p style="margin-bottom: 12px;">
+                                    <strong>兴趣特点：</strong>你对学术和技术话题表现出浓厚兴趣，特别是算法和智能技术领域。同时，你也关注个人成长和心理健康话题。你的兴趣广泛但不够深入，建议在某些领域进行更专注的探索。
+                                </p>
+                                <p style="margin-bottom: 12px;">
+                                    <strong>情绪模式：</strong>整体情绪稳定，但在面对学业压力时会表现出焦虑倾向。你善于自我调节，会主动寻求支持和倾诉。建议保持这种积极的应对方式，同时注意预防性的压力管理。
+                                </p>
+                                <p>
+                                    <strong>成长建议：</strong>你具备良好的自我认知能力，建议进一步提升决策果断性和行动力。在社交中可以尝试更主动地表达观点，不必过度担心他人的评价。继续保持对新事物的开放态度，这是你的优势。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #c5d1de; font-weight: 600;">
+                        大五人格特质
+                        <span style="font-size: 12px; color: #6d7883; font-weight: normal; margin-left: 8px;">
+                            (基于对话行为分析)
+                        </span>
+                    </h3>
+                    <div class="personality-chart">
+                        <div class="personality-item">
+                            <div class="personality-label">神经质</div>
+                            <div class="personality-bar">
+                                <div class="personality-bar-fill" style="width: 45%"></div>
+                            </div>
+                            <div class="personality-value">45%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #6d7883; margin-bottom: 12px; padding-left: 112px;">
+                            情绪较为稳定，但在压力情境下会表现出一定的焦虑倾向
+                        </div>
+                        
+                        <div class="personality-item">
+                            <div class="personality-label">宜人性</div>
+                            <div class="personality-bar">
+                                <div class="personality-bar-fill" style="width: 78%"></div>
+                            </div>
+                            <div class="personality-value">78%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 12px; padding-left: 112px;">
+                            高度合作和友善，善于倾听和理解他人，较少产生冲突
+                        </div>
+                        
+                        <div class="personality-item">
+                            <div class="personality-label">外向性</div>
+                            <div class="personality-bar">
+                                <div class="personality-bar-fill" style="width: 52%"></div>
+                            </div>
+                            <div class="personality-value">52%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 12px; padding-left: 112px;">
+                            中等偏内向，更喜欢深度交流而非广泛社交，需要独处时间充电
+                        </div>
+                        
+                        <div class="personality-item">
+                            <div class="personality-label">开放性</div>
+                            <div class="personality-bar">
+                                <div class="personality-bar-fill" style="width: 85%"></div>
+                            </div>
+                            <div class="personality-value">85%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 12px; padding-left: 112px;">
+                            对新事物和新观点保持高度开放，富有想象力和创造力
+                        </div>
+                        
+                        <div class="personality-item">
+                            <div class="personality-label">尽责性</div>
+                            <div class="personality-bar">
+                                <div class="personality-bar-fill" style="width: 72%"></div>
+                            </div>
+                            <div class="personality-value">72%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #64748b; padding-left: 112px;">
+                            较为自律和有条理，但有时会因完美主义而拖延
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #334155;">
+                        兴趣图谱
+                        <span style="font-size: 12px; color: #64748b; font-weight: normal; margin-left: 8px;">
+                            (从对话中自动提取)
+                        </span>
+                    </h3>
+                    <div>
+                        <strong>学术兴趣：</strong>
+                        <span class="tag">考研 (提及32次)</span>
+                        <span class="tag">算法 (提及28次)</span>
+                        <span class="tag">智能技术 (提及24次)</span>
+                        <span class="tag">数据结构 (提及15次)</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <strong>职业兴趣：</strong>
+                        <span class="tag">软件工程师 (提及18次)</span>
+                        <span class="tag">产品经理 (提及12次)</span>
+                        <span class="tag">技术创业 (提及8次)</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <strong>爱好兴趣：</strong>
+                        <span class="tag">阅读 (提及45次)</span>
+                        <span class="tag">音乐 (提及38次)</span>
+                        <span class="tag">摄影 (提及22次)</span>
+                        <span class="tag">跑步 (提及16次)</span>
+                    </div>
+                </div>
+
+                <!-- 行为特征分析 -->
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #334155;">行为特征分析</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">活跃时段</div>
+                            <div style="font-weight: bold; color: #334155;">晚上 20:00-23:00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">平均响应时间</div>
+                            <div style="font-weight: bold; color: #334155;">3.5 分钟</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">对话深度偏好</div>
+                            <div style="font-weight: bold; color: #334155;">深度交流型</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">表情使用频率</div>
+                            <div style="font-weight: bold; color: #334155;">中等 (15%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 画像更新记录 -->
+                <div class="card" style="background: #f8fafc;">
+                    <h3 style="margin-bottom: 16px; color: #334155;">画像更新记录</h3>
+                    <div style="font-size: 14px; color: #64748b; line-height: 2;">
+                        <div>📅 2024-01-15：新增"技术创业"兴趣标签，开放性提升3%</div>
+                        <div>📅 2024-01-08：更新沟通风格分析，响应时间缩短0.5分钟</div>
+                        <div>📅 2024-01-01：生成年度画像报告，整体稳定发展</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="refreshProfile()">🔄 刷新画像</button>
+                    <button class="btn btn-secondary" onclick="downloadProfile()">📥 导出画像</button>
+                    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">
+                        画像每周自动更新一次，或在对话达到50条后触发更新
+                    </p>
+                </div>
+            </div>
+
+            <!-- 报告页面 -->
+            <div id="report" class="page">
+                <h2 style="margin-bottom: 20px; color: #c5d1de; font-weight: 600;">📊 成长报告</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-secondary" onclick="loadReport('weekly')">周报</button>
+                    <button class="btn btn-secondary" onclick="loadReport('monthly')">月报</button>
+                    <button class="btn btn-secondary" onclick="loadReport('annual')">年报</button>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">本周对话次数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">本周消息数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">新增匹配</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4.5</div>
+                        <div class="stat-label">平均对话质量</div>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <h3>对话质量分析</h3>
+                    <div class="card">
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: #c5d1de;">话题深度：</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 82%"></div>
+                            </div>
+                            <span style="color: #5288c1; font-weight: 600;">82%</span>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: #c5d1de;">回应一致性：</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span style="color: #5288c1; font-weight: 600;">75%</span>
+                        </div>
+                        <div>
+                            <strong style="color: #c5d1de;">情感同步性：</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 88%"></div>
+                            </div>
+                            <span style="color: #5288c1; font-weight: 600;">88%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <h3>兴趣发展</h3>
+                    <div class="card">
+                        <p><strong style="color: #c5d1de;">新发现的兴趣：</strong></p>
+                        <span class="tag">机器学习</span>
+                        <span class="tag">心理学</span>
+                        <span class="tag">跑步</span>
+                        <p style="margin-top: 12px;"><strong style="color: #c5d1de;">深化的兴趣：</strong></p>
+                        <span class="tag">考研</span>
+                        <span class="tag">算法</span>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <h3>情绪健康</h3>
+                    <div class="card">
+                        <div class="alert alert-success">
+                            ✅ 本周情绪状态良好，保持积极向上的心态
+                        </div>
+                        <p style="color: #8b98a5;"><strong style="color: #c5d1de;">情绪趋势：</strong>整体稳定，偶有焦虑（考试压力）</p>
+                        <p style="color: #8b98a5; margin-top: 8px;"><strong style="color: #c5d1de;">建议：</strong>继续保持规律作息，适当放松，可以尝试冥想或运动</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="downloadReport()">下载报告</button>
+                <button class="btn btn-secondary" onclick="shareReport()">分享报告</button>
+            </div>
+
+            <!-- 设置页面 -->
+            <div id="settings" class="page">
+                <h2 style="margin-bottom: 20px; color: #c5d1de; font-weight: 600; display: flex; align-items: center; gap: 12px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"></path>
+                    </svg>
+                    设置
+                </h2>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #c5d1de; font-weight: 600;">隐私设置</h3>
+                    <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <input type="checkbox" checked style="margin-right: 8px;">
+                        允许其他用户查看我的画像
+                    </label>
+                    <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <input type="checkbox" checked style="margin-right: 8px;">
+                        允许AI助手介入对话
+                    </label>
+                    <label style="display: flex; align-items: center;">
+                        <input type="checkbox" style="margin-right: 8px;">
+                        匿名模式
+                    </label>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #334155;">通知设置</h3>
+                    <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <input type="checkbox" checked style="margin-right: 8px;">
+                        新匹配通知
+                    </label>
+                    <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <input type="checkbox" checked style="margin-right: 8px;">
+                        新消息通知
+                    </label>
+                    <label style="display: flex; align-items: center;">
+                        <input type="checkbox" checked style="margin-right: 8px;">
+                        周报生成通知
+                    </label>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: #334155;">账号管理</h3>
+                    <button class="btn btn-secondary" onclick="changePassword()">修改密码</button>
+                    <button class="btn btn-secondary" onclick="exportData()">导出数据</button>
+                    <button class="btn btn-secondary" style="background: #fee2e2; color: #991b1b;" onclick="deleteAccount()">删除账号</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="advanced-features.js"></script>
+    <script src="app.js"></script>
+    <script src="demo-integration.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Web framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.10.0
+pydantic-settings==2.6.0
+email-validator==2.2.0
+
+# Database drivers
+pymysql==1.1.0
+redis==5.0.1
+sqlalchemy==2.0.23
+
+# Testing framework
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+hypothesis==6.92.1
+httpx==0.25.2
+
+# Utility libraries
+python-dotenv==1.0.0
+python-multipart==0.0.6
+
+# Security and encryption
+cryptography==41.0.7
+pyjwt==2.8.0
+
+# Machine Learning libraries (optional, for personality recognition)
+# torch>=2.0.0
+# transformers>=4.30.0
+# numpy>=1.24.0
+# scikit-learn>=1.3.0
